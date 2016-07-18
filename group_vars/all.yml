@@ -1,7 +1,0 @@
-docker_daemon_config: 'OPTIONS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --default-ulimit nofile=1024:4096 --storage-opt dm.basesize=200G --storage-opt dm.loopdatasize=200G"'
-docker_db_image_url: "https://fmw-docker-images.s3-accelerate.amazonaws.com/db12c.tar"
-docker_soa_image_url: "https://fmw-docker-images.s3-accelerate.amazonaws.com/fmwsoa.tar"
-docker_osb_image_url: "https://fmw-docker-images.s3-accelerate.amazonaws.com/fmwosb.tar"
-install_choice: 'soa'
-swap_file_path: '/var/swap'
-swap_file_size: '3096'
