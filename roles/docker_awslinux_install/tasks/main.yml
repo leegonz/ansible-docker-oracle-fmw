@@ -1,0 +1,9 @@
+- block: 
+    - name: Install Docker
+      yum: name=docker state=latest
+
+    - name: Configure Docker Deamon Settings
+      lineinfile: dest=/etc/sysconfig/docker regexp='OPTIONS' line={{ docker_daemon_config }}
+
+    - name: Start docker service
+      service: name=docker state=started enabled=yes

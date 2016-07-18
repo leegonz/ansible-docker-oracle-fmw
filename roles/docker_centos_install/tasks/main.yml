@@ -1,0 +1,39 @@
+- block:
+   - name: Create Docker yum repo
+     yum_repository:
+       name: dockerrepo
+       description: "Docker Repository"
+       baseurl: "https://yum.dockerproject.org/repo/main/centos/$releasever/"
+       gpgkey: "https://yum.dockerproject.org/gpg"
+       gpgcheck: yes
+       enabled: yes
+     register: repo
+
+   - debug: var=repo
+
+   - name: Install Docker
+     yum: name=docker-engine-1.11.1-1.el7.centos.x86_64 state=present
+
+   - name: Configure Docker Service Settings
+     template:
+       src: "docker.service.j2"
+       dest: "/usr/lib/systemd/system/docker.service"
+       owner: "root"
+       group: "root"
+       mode: 0644
+
+   - name: Configure Docker Daemon Settings
+     lineinfile: 
+      dest: "/etc/sysconfig/docker"
+      line: "{{ docker_daemon_config }}"
+      create: yes
+      state: present
+      owner: "root"
+      group: "root"
+      mode: 0644
+
+   - name: Reload System Daemon
+     shell: systemctl daemon-reload
+
+   - name: Start Docker Service
+     service: name=docker state=started enabled=yes

@@ -1,0 +1,25 @@
+- block:
+    - name: Install wget
+      yum: name=wget state=present
+
+    - name: Download Database Docker image
+      shell: wget "{{ docker_db_image_url }}" -O /tmp/db_image.tar
+
+    - set_fact:
+        download_image_url: "{{ docker_soa_image_url }}"
+      when: install_choice == 'soa'
+
+    - set_fact:
+        download_image_url: "{{ docker_osb_image_url }}"
+      when: install_choice == 'osb'
+
+    - name: Download SOA or OSB Docker Image
+      shell: wget "{{ download_image_url }}" -O /tmp/{{ install_choice }}_image.tar
+
+    - name: Docker load Oracle Database image
+      shell: docker load -i /tmp/db_image.tar
+
+    - name: Docker load Oracle FMW SOA or OSB image
+      shell: docker load -i /tmp/{{ install_choice }}_image.tar
+
+

@@ -1,0 +1,7 @@
+- hosts: "docker_host"
+  become: true
+  become_user: root
+  roles:
+#    - create_swapfile
+    - docker_awslinux_install
+    - docker_load
